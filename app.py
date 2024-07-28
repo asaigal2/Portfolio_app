@@ -3,18 +3,67 @@ import pandas as pd
 import plotly.express as px
 import folium
 from streamlit_folium import folium_static
-#from chatbot import PersonalChatBot
+import openai
+from langchain.llms import OpenAI  # Corrected import
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, ServiceContext
+from langchain.llms import OpenAI 
+import os
+OpenAI_key = os.environ.get("OPENAI_API_KEY")
+
+if OpenAI_key is None:
+    st.error("OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.")
+else:
+    openai.api_key = OpenAI_key
+
 
 
 def first_page():
-    st.title('Hi I am Ayushi! \U0001F44B')
+    st.title('Hi I am Ayushi! 👋')
     st.write('I am a senior at the University of Wisconsin-Madison studying Electrical Engineering with a specialization in Data Science and Machine Learning. I am also pursuing a minor in Computer Sciences. I am so happy you are here!')
-    url = 'https://online.publuu.com/573596/1287891'
+    url = 'Resume_Ayushi_Saigal.pdf'
 
     st.markdown(f'''
     <a href={url}><button style="background-color:Pink;">Check out my Resume</button></a>
-    ''',
-    unsafe_allow_html=True)
+    ''', unsafe_allow_html=True)
+    st.header("Meet AyushiBot!")
+    st.write("Hello! I am AyushiBot. Ask me questions about Ayushi! ")
+
+    # Define AI agent functionality
+    def ask_bot(input_text):
+        # Define LLM
+        
+            llm = OpenAI(
+                model_name="gpt-3.5-turbo",
+                temperature=0,
+                openai_api_key=OpenAI_key,
+            )
+            service_context = ServiceContext.from_defaults(llm=llm)
+            
+            # Load the file
+            documents = SimpleDirectoryReader(input_files=["bio.txt"]).load_data()
+
+            # Load index
+            index = VectorStoreIndex.from_documents(documents, service_context=service_context)    
+
+            # Query LlamaIndex and GPT-3.5 for the AI's response
+            PROMPT_QUESTION = """You are an AI agent named AyushiBot helping answer questions about Ayushi to recruiters. Introduce yourself when you are introducing who you are.
+            If you do not know the answer, politely admit it and let users know how to contact Ayushi to get more information. 
+            Human: {input}
+            """
+            output = index.as_query_engine().query(PROMPT_QUESTION.format(input=input_text))
+            print(f"output: {output}")
+            return output.response
+            
+        
+
+    def get_text():
+        input_text = st.text_input("You can send your questions and hit Enter to know more about me from my AI agent, AyushiBot!", key="input")
+        return input_text
+
+    user_input = get_text()
+
+    if user_input:
+        st.info(ask_bot(user_input))
 
 
 def second_page():
