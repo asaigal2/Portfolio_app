@@ -3,10 +3,6 @@ import pandas as pd
 import plotly.express as px
 import folium
 from streamlit_folium import folium_static
-import openai
-from langchain.llms import OpenAI  # Corrected import
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, ServiceContext
-from langchain.llms import OpenAI 
 
 
 
