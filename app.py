@@ -1,21 +1,81 @@
+import os
+import openai
 import streamlit as st
-import pandas as pd
-import plotly.express as px
-import folium
-from streamlit_folium import folium_static
+import base64
+from langchain.llms import openai  # Corrected import
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, ServiceContext
+import streamlit.components.v1 as components
+from openai import OpenAI
+import requests
 
+# Page configuration
+st.set_page_config(
+    page_title='Portfolio',  # Title of the browser tab
+    layout="wide",           # Use the wide layout
+    page_icon='👧🏻'
+)
 
+# Retrieve OpenAI API key from environment variables
+OpenAI_key = os.environ.get("OPENAI_API_KEY")
+
+if OpenAI_key is None:
+    st.error("OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.")
+else:
+    openai.api_key = OpenAI_key
+
+# Function to display PDF
+def get_pdf_display(pdf_file):
+    # Read PDF file
+    with open(pdf_file, "rb") as f:
+        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+    # Create an HTML embed code for the PDF
+    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="800" height="600" type="application/pdf"></iframe>'
+    return pdf_display
 
 def first_page():
     st.title('Hi I am Ayushi! 👋')
     st.write('I am a senior at the University of Wisconsin-Madison studying Electrical Engineering with a specialization in Data Science and Machine Learning. I am also pursuing a minor in Computer Sciences. I am so happy you are here!')
-    url = 'Resume_Ayushi_Saigal.pdf'
 
-    st.markdown(f'''
-    <a href={url}><button style="background-color:Pink;">Check out my Resume</button></a>
-    ''', unsafe_allow_html=True)
+    resume_file = 'Resume_Ayushi_Saigal.pdf'
+
+    if 'show_resume' not in st.session_state:
+        st.session_state.show_resume = False
+
+    # Custom button with the same styling
+    if st.button('Check out my Resume', key='resume_button'):
+        st.session_state.show_resume = True
+
+    # Display the embedded resume if the button is clicked
+    if st.session_state.show_resume:
+        pdf_display = get_pdf_display(resume_file)
+        st.markdown(pdf_display, unsafe_allow_html=True)
+    #****************************************************chatbot******************************************#
+    client = OpenAI()
     st.header("Meet AyushiBot!")
-    st.write("Hello! I am AyushiBot. Ask me questions about Ayushi! ")
+    st.write("Hello! I am AyushiBot. Ask me questions about Ayushi!")
+    with open("bio.txt", "r") as file:
+        bio_content = file.read()
+    # Define AI agent functionality
+    def ask_bot(input_text):
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+            {"role": "system", "content": f"You are an AI agent named AyushiBot helping answer questions about Ayushi to recruiters. Here is some information about Ayushi: {bio_content} If you do not know the answer, politely admit it and let users know to contact Ayushi to get more information."},
+            {"role": "user", "content": input_text}
+        ]
+    )
+        return response.choices[0].message.content
+
+    def get_text():
+        input_text = st.text_input("You can send your questions and hit Enter to know more about me from my AI agent, AyushiBot!", key="input")
+        return input_text
+
+    user_input = get_text()
+    if user_input:
+        bot_response = ask_bot(user_input)
+        st.write(bot_response)
+    
+
 
 
 def second_page():
