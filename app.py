@@ -20,7 +20,9 @@ if OpenAI_key:
     openai.api_key = OpenAI_key
 else:
     st.error("OpenAI API Key not found. Please check your secrets configuration.")
-
+# Initialize session state to track the current section
+if 'section' not in st.session_state:
+    st.session_state.section = 'About Me'  # Default section is 'About Me'
 # Function to display PDF
 def get_pdf_display(pdf_file):
     with open(pdf_file, "rb") as f:
@@ -44,6 +46,28 @@ def render_about_me():
     if st.session_state.show_resume:
         pdf_display = get_pdf_display(resume_file)
         st.markdown(pdf_display, unsafe_allow_html=True)
+        st.header("Meet AyushiBot!")
+    st.write("Hello! I am AyushiBot. ")
+    
+    with open("bio.txt", "r") as file:
+        bio_content = file.read()
+
+    def ask_bot(input_text):
+        response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": f"You are an AI agent named AyushiBot helping answer questions about Ayushi to recruiters. Here is some information about Ayushi: {bio_content}. If you do not know the answer, politely admit it and let users know to contact Ayushi for more information."},
+            {"role": "user", "content": input_text}
+        ]
+    )
+    
+        return response.choices[0].message.content
+       
+
+    user_input = st.text_input("Ask me anything about Ayushi!(Hobbies, Visa Status etc!)")
+    if user_input:
+        bot_response = ask_bot(user_input)
+        st.write(bot_response)
 
 # Function to render the chatbot
 def render_chatbot():
@@ -133,6 +157,7 @@ def render_research_experience():
             - **Statistical Analysis**: Performed **t-tests** to determine statistical significance in treatment efficacy before and after PDT intervention.
             - **Outcome**: The data-driven approach led to more accurate predictions of PPIX distribution, improving the precision of PDT treatment.
         """)
+def projects():
      # Main Project: India Elections Data Analysis
     st.markdown("<h2 style='margin-bottom: 20px;'>Projects </h2>", unsafe_allow_html=True)
     col1, col2 = st.columns([1, 2])
@@ -226,18 +251,37 @@ def render_research_experience():
             - **Interactivity**: Enabled users to apply filters on product categories, regions, and shipping methods for dynamic data exploration.
             - **DAX Measures**: Used DAX to calculate metrics such as total sales, profit margins, and year-over-year growth, providing deeper insights into business performance.
     """)
+def skills():
+    return True
 
 
 
 
-# Main function to render the webpage
-def main():
+# Create horizontal buttons using st.columns
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    if st.button('About Me'):
+        st.session_state.section = 'About Me'
+
+with col2:
+    if st.button('Technical Experience'):
+        st.session_state.section = 'Technical Experience'
+
+with col3:
+    if st.button('Projects'):
+        st.session_state.section = 'Projects'
+
+with col4:
+    if st.button('Skills/Classes Taken'):
+        st.session_state.section = 'Skills/Classes Taken'
+
+# Render the selected section based on the session state
+if st.session_state.section == 'About Me':
     render_about_me()
-    st.markdown("---")
-    render_chatbot()
-    st.markdown("---")
+elif st.session_state.section == 'Technical Experience':
     render_research_experience()
-
-# Run the main function
-if __name__ == "__main__":
-    main()
+elif st.session_state.section == 'Projects':
+    projects()
+elif st.session_state.section == 'Skills/Classes Taken':
+    skills()
