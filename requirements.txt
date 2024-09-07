@@ -3,5 +3,5 @@ pandas
 plotly
 folium
 streamlit-folium
+openai==1.44.0
 
-openai==0.27.8  # or the latest version you are using
