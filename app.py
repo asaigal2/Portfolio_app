@@ -261,15 +261,15 @@ def skills():
     - **BCG - Data Science Job Simulation**  
       Issued by Forage (July 2024)  
       Credential ID: DjQM5itStfoaEyjpi  
-      [View Credential](#)  <!-- Add credential link if available -->
+      [View Credential](#)  
 
     - **Fundamentals of Analytics on AWS**  
       Issued by Amazon Web Services (AWS) (July 2024)  
-      [View Credential](AWS_Skill_Builder_Certificate.pdf)  <!-- You can link the PDF if you upload it -->
+      [View Credential](AWS_Skill_Builder_Certificate.pdf) 
 
     - **SQL**  
       Issued by HackerRank (July 2024)  
-      [View Credential](#)  <!-- Add credential link if available -->
+      [View Credential](#)  
              
     - **Deloitte Salesforce Bootcamp** (Among 30 students accepted to gain hands-on Salesforce)
 
