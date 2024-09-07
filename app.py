@@ -252,7 +252,44 @@ def projects():
             - **DAX Measures**: Used DAX to calculate metrics such as total sales, profit margins, and year-over-year growth, providing deeper insights into business performance.
     """)
 def skills():
-    return True
+    st.title("Skills and Classes Taken")
+    
+
+    # Licenses & Certifications section
+    st.subheader("Licenses & Certifications")
+    st.write("""
+    - **BCG - Data Science Job Simulation**  
+      Issued by Forage (July 2024)  
+      Credential ID: DjQM5itStfoaEyjpi  
+      [View Credential](#)  <!-- Add credential link if available -->
+
+    - **Fundamentals of Analytics on AWS**  
+      Issued by Amazon Web Services (AWS) (July 2024)  
+      [View Credential](AWS_Skill_Builder_Certificate.pdf)  <!-- You can link the PDF if you upload it -->
+
+    - **SQL**  
+      Issued by HackerRank (July 2024)  
+      [View Credential](#)  <!-- Add credential link if available -->
+             
+    - **Deloitte Salesforce Bootcamp** (Among 30 students accepted to gain hands-on Salesforce)
+
+    - **Tableau**  
+      Issued by Udemy
+    """)
+
+    # Classes section
+    st.subheader("Classes Taken")
+    st.write("""
+    - **Calculus**
+    - **Image Processing**
+    - **Signal Processing**
+    - **Probability & Statistics**
+    - **Linear Algebra**
+    - **Random Variables and Probability**
+    - **Machine Learning**
+    - **Matrix Methods in Machine Learning**
+    - **Digital System Fundamentals**
+    """)
 
 
 
