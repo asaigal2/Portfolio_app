@@ -2,11 +2,7 @@ import os
 import openai
 import streamlit as st
 import base64
-from langchain.llms import openai  # Corrected import
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader, ServiceContext
-import streamlit.components.v1 as components
 from openai import OpenAI
-import requests
 
 # Page configuration
 st.set_page_config(
@@ -14,26 +10,24 @@ st.set_page_config(
     layout="wide",           # Use the wide layout
     page_icon='👧🏻'
 )
+# Retrieve OpenAI API key from Streamlit Secrets
+OpenAI_key = st.secrets["OPENAI_API_KEY"]
 
-# Retrieve OpenAI API key from environment variables
-OpenAI_key = os.environ.get("OPENAI_API_KEY")
-
-if OpenAI_key is None:
-    st.error("OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.")
-else:
+if OpenAI_key:
     openai.api_key = OpenAI_key
+else:
+    st.error("OpenAI API Key not found. Please check your secrets configuration.")
 
 # Function to display PDF
 def get_pdf_display(pdf_file):
-    # Read PDF file
     with open(pdf_file, "rb") as f:
         base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-    # Create an HTML embed code for the PDF
     pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="800" height="600" type="application/pdf"></iframe>'
     return pdf_display
 
-def first_page():
-    st.title('Hi I am Ayushi! 👋')
+# Function to render the "About Me" section
+def render_about_me():
+    st.title('Hi, I am Ayushi! 👋')
     st.write('I am a senior at the University of Wisconsin-Madison studying Electrical Engineering with a specialization in Data Science and Machine Learning. I am also pursuing a minor in Computer Sciences. I am so happy you are here!')
 
     resume_file = 'Resume_Ayushi_Saigal.pdf'
@@ -41,108 +35,206 @@ def first_page():
     if 'show_resume' not in st.session_state:
         st.session_state.show_resume = False
 
-    # Custom button with the same styling
-    if st.button('Check out my Resume', key='resume_button'):
-        st.session_state.show_resume = True
+    if st.button('Check out my Resume'):
+        st.session_state.show_resume = not st.session_state.show_resume
 
-    # Display the embedded resume if the button is clicked
     if st.session_state.show_resume:
         pdf_display = get_pdf_display(resume_file)
         st.markdown(pdf_display, unsafe_allow_html=True)
-    #****************************************************chatbot******************************************#
-    client = OpenAI()
+
+# Function to render the chatbot
+def render_chatbot():
     st.header("Meet AyushiBot!")
-    st.write("Hello! I am AyushiBot. Ask me questions about Ayushi!")
+    st.write("Hello! I am AyushiBot")
+    
     with open("bio.txt", "r") as file:
         bio_content = file.read()
-    # Define AI agent functionality
+
     def ask_bot(input_text):
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
-            {"role": "system", "content": f"You are an AI agent named AyushiBot helping answer questions about Ayushi to recruiters. Here is some information about Ayushi: {bio_content} If you do not know the answer, politely admit it and let users know to contact Ayushi to get more information."},
-            {"role": "user", "content": input_text}
-        ]
-    )
-        return response.choices[0].message.content
+                {"role": "system", "content": f"You are an AI agent named AyushiBot helping answer questions about Ayushi to recruiters. Here is some information about Ayushi: {bio_content} If you do not know the answer, politely admit it and let users know to contact Ayushi for more information."},
+                {"role": "user", "content": input_text}
+            ]
+        )
+        return response.choices[0].message['content']
 
-    def get_text():
-        input_text = st.text_input("You can send your questions and hit Enter to know more about me from my AI agent, AyushiBot!", key="input")
-        return input_text
-
-    user_input = get_text()
+    user_input = st.text_input("Ask me anything about Ayushi! (Hobbies, favourite book etc.)")
     if user_input:
         bot_response = ask_bot(user_input)
         st.write(bot_response)
-    
 
+# Function to render research experience
+def render_research_experience():
+    st.markdown("<h1 style='margin-bottom: 20px;'>Technical Experience</h1>", unsafe_allow_html=True)
 
-
-def second_page():
-    st.markdown("<h1 style='margin-bottom: 20px;'>Research Experience:</h1>", unsafe_allow_html=True)
+    # Project 1: ML Science Intern
     col1, col2 = st.columns([1, 2])
+    
     with col1:
-        image_path = 'Presentation_Image_Processing.jpeg'
-        st.image(image_path, caption="Poster Presentation")
-        
-        st.markdown("""
-        **Image Processing workflow used**  
-        1. **Fourier Filtering**  
-        2. **Baseline Calculation**  
-        3. **Thresholding**  
-        4. **Erosion and Dilation**  
-        5. **Blob Detection**  
-        6. **Visualize Centroids**
+        # Display an image related to the technical experience
+        st.image('Tech.png', caption="Bennett Coleman - Data Science & Analytics Intern")
+
+    with col2:
+        st.markdown("**Data Science and Analytics Intern - Bennett Coleman**")
+        st.write("""
+            - **Role**: Contributed to the **Business Intelligence** team by delivering data-driven insights and improving data processes.
+            - **Python Automation**: Developed Python scripts to automate data collection and preprocessing for datasets exceeding 500,000 rows, reducing manual data entry efforts by **75%**.
+            - **SQL & Excel**: Created advanced **SQL queries** and used **Excel functions** (e.g., pivot tables, VLOOKUP) to extract and analyze data from multiple databases, uncovering trends that improved decision-making accuracy.
+            - **Data Visualization**: Designed interactive **PowerBI dashboards**, integrating data extracted via **Selenium** from web sources to provide actionable insights.
+            - **Elections Data Analysis**: Developed a comprehensive data analysis system for election data, using **PostgreSQL** for data management, and created interactive maps and visualizations to effectively present election results.
+            - **India Map with Filters**: Created an interactive **India map** using **GeoJSON** data, adding multiple filters to allow users to explore various election metrics and visualize results geographically.
+            - **Containerized Visualizations**: Utilized **Streamlit** and **Django** to containerize and deploy interactive visualizations, enabling seamless integration of data analytics and dashboards into web applications.
         """)
 
-    with col2:
-        st.markdown("**Project 1: Summer 2023-Image Processing Intern at UW Hospital**")
-        st.markdown('''
-        I had the incredible opportunity to work individually at the Medical Physics X-Ray Imaging (MOXI) lab, where I focused on  quantifying the levels of endogenous Protoporphyrin-IX (PPIX) in the pores of the skin. This work is critical for enhancing the effectiveness of photodynamic therapy (PDT), a treatment modality for various skin conditions and cancers.
-        During this project, I employed **MATLAB extensively for data processing and analysis.** MATLABs robust capabilities in image processing allowed me to apply various filtering techniques to enhance and isolate relevant features in the skin images.
-        One of the key methodologies I utilized was **machine learning, specifically k-means clustering**. 
-        By clustering pixels based on their intensity and color features, I could distinguish areas with high concentrations of PPIX from those with lower levels.
-        To ensure the reliability and **statistical significance of my findings, I conducted t-tests**.
-        These statistical tests helped compare the PPIX levels before and after the application of treatments, determining the efficacy of the interventions. 
-        ''')
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
     col1, col2 = st.columns([1, 2])
     with col1:
-        image_path = 'MathResearch.PNG'
-        st.image(image_path, caption="As seen on the lab's website")
-
+        st.image('image.png', caption="Reference picture")
     with col2:
-        st.markdown("                                                               ")
-        st.markdown("**Project 2: Math Researcher at Madison Experimental Mathematics Lab**")
-        st.markdown('''At the Madison Experimental Mathematics Lab, I delved into the complexities of three-dimensional slow k-nim games. 
-                    These **combinatorial games** involve players taking turns to remove stones from heaps based on specific rules, with the goal of being the one to remove the last stone.
-                     My research focused on identifying optimal strategies by categorizing game positions as either P-positions, where the previous player can force a win, or N-positions, where the next player has a winning strategy.
-                     Through **recursive analysis and strategic evaluation**, I explored how players can navigate these complex configurations to force their opponents into disadvantageous positions, ultimately leading to a win. This experience enhanced my understanding of **advanced mathematical concepts** and their applications in game theory, 
-                    building on principles from one and two-dimensional nim games and adapting them to a more intricate three-dimensional context.
-        ''')
+        st.markdown("**Machine Learning Researcher for Medical Imaging Denoising**")
+        st.write("""
+            - **Objective**: Developed a neural network-based solution to denoise medical images, improving the clarity of images used in **Fluorescence Guided Surgery (FGS)**.
+            - **Machine Learning Framework**: Implemented the **Noise2Noise** methodology to train neural networks on noisy data, allowing for noise-free medical images without requiring clean datasets.
+            - **Data Augmentation**: Created custom datasets with synthetic noise to simulate real-world conditions, ensuring robust model performance.
+            - **Outcome**: The neural network significantly improved the quality of FGS images, enhancing the precision and reliability of surgical outcomes.
+        """)
 
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("**Project 3: Machine Learning Researcher for Medical Imaging Denoising**")
-    st.markdown('''
-    During my independent study, I focused on leveraging **neural network technologies** to enhance medical imaging, particularly in challenging environments where noise-free data is scarce. My research project, inspired by the "Noise2Noise" framework from Nvidia, aimed to develop a neural network denoiser capable of training with noisy datasets typical of clinical settings. Specifically, I applied this methodology to Fluorescence Guided Surgery (FGS), a crucial technique in modern surgical procedures that relies on fluorescent markers to distinguish between healthy and diseased tissues. The inherent noise in FGS imaging—stemming from shot noise, camera sensor imperfections, and laser leakage light—compromises image clarity and surgical precision. To address these challenges, 
-                I created custom datasets augmented with synthetic noise, allowing the neural network to learn denoising under realistic conditions. The training loop integrated these noise-augmented frames, enabling the model to predict clean states from noisy inputs. This approach not only aimed to enhance practical deployment in healthcare but also contributed to the broader understanding of **noise modeling and machine learning theory**. 
-                The project's success in improving image clarity has significant implications for better surgical outcomes and the adoption of advanced imaging techniques.
-    ''')
 
-st.sidebar.title("Navigation")
-st.markdown(f'''
-    <style>
-    section[data-testid="st.sidebar"] .css-ng1t4o {{width: 14rem;}}
-    </style>
-''', unsafe_allow_html=True)
-page = st.sidebar.selectbox("Go to", ["About me!","Research", "Personal Projects"])
+    # Project 2: Math Researcher
+    col1, col2 = st.columns([1, 2])
+    with col1:
+        st.image('MathResearch.PNG', caption="As seen on the lab's website")
+    with col2:
+        st.markdown("**Math Researcher at Madison Experimental Mathematics Lab**")
+        st.write("""
+            - **Objective**: Developed a strategic framework to optimize outcomes in three-dimensional slow k-nim combinatorial games using mathematical modeling and data analysis.
+            - **Data Analysis**: Conducted recursive analysis to identify **P-positions** and **N-positions**, using **game theory** and advanced combinatorial optimization techniques.
+            - **Quantitative Methods**: Utilized recursive algorithms to simulate game scenarios, optimizing strategies to force opponents into unfavorable positions.
+            - **Outcome**: Developed a novel algorithm for analyzing multi-dimensional game structures, improving the understanding of game complexity in combinatorial mathematics.
+        """)
 
-# Display the selected page
-if page == "About me!":
-    first_page()
-elif page == "Research":
-    second_page()
-elif page == "Personal Projects":
-    st.write('Under construction...')
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Project 3: Machine Learning Researcher
+    col1, col2 = st.columns([1, 2])
+    with col1:
+        st.image('Presentation_Image_Processing.jpeg', caption="Poster Presentation")
+    with col2:
+        st.markdown("**Image Processing/Data Science Intern at UW Hospital (Medical Physics X-Ray Imaging Lab)**")
+        st.write("""
+            - **Objective**: Quantified the levels of endogenous Protoporphyrin-IX (PPIX) in skin pores to enhance the effectiveness of Photodynamic Therapy (PDT) for skin conditions and cancers.
+            - **Data Processing**: Utilized **MATLAB** for data preprocessing and image analysis, applying techniques such as **Fourier Filtering** to isolate and enhance key features.
+            - **Machine Learning**: Employed **k-means clustering** to segment regions of the skin based on PPIX concentration levels, allowing for the identification of high-risk areas.
+            - **Statistical Analysis**: Performed **t-tests** to determine statistical significance in treatment efficacy before and after PDT intervention.
+            - **Outcome**: The data-driven approach led to more accurate predictions of PPIX distribution, improving the precision of PDT treatment.
+        """)
+     # Main Project: India Elections Data Analysis
+    st.markdown("<h2 style='margin-bottom: 20px;'>Projects </h2>", unsafe_allow_html=True)
+    col1, col2 = st.columns([1, 2])
+    
+    with col1:
+        # Display an image for the project
+        st.image('India_Elections.png', caption="India Elections Data Analysis")
+    with col2:
+        st.markdown("**India Elections Data Analysis**")
+        st.write("""
+            - **GitHub**: [India Elections Data Analysis](https://github.com/asaigal2/India_Elections_Data_Analysis)
+            - **Overview**: An in-depth data analysis project examining Indian election data, focusing on trends, geographical impact, and voting patterns.
+            - **Tools Used**: Python (Pandas, Matplotlib), PostgreSQL for data management, and Streamlit for creating interactive visualizations.
+            - **Key Features**:
+                - Built interactive visualizations, like treemaps, histograms, stacked bar charts including a geo-spatial map of India with filters for exploring election metrics, using D3.js.
+                - Analyzed historical data to predict future voting trends.
+                - Containerised visualisations using streamlit library in Python and Django Framework.
+        """)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Section for Mini Projects
+    st.markdown("<h3 style='margin-bottom: 20px;'>Mini Projects</h2>", unsafe_allow_html=True)
+
+    # Mini Project 1: Wine Quality Classification
+    col1, col2 = st.columns([1, 2])
+    with col1:
+        st.image('WineClassification.png', caption="Wine Quality Classification")
+    with col2:
+        st.markdown("**Project 1: Wine Quality Classification**")
+        st.write("""
+            - **GitHub**: [Wine Quality Classification](https://github.com/asaigal2/Mini-Projects/tree/main/Project1)
+            - **Overview**: A machine learning classification project aimed at predicting the quality of white wine based on chemical properties.
+            - **Dataset**: UCI Machine Learning Repository with approximately 5000 variations of white wine.
+            - **Key Features**:
+                - Cleaned data to handle missing values, normalized features, and prepared it for modeling.
+                - **Models Used**: k-Nearest Neighbors (k-NN), Decision Tree, Random Forest, and Stochastic Gradient Descent (SGD) classifiers.
+                - The dataset was split into training (80%) and testing (20%) sets.
+        """)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Mini Project 2: NVDA Stock Prediction Model
+    col1, col2 = st.columns([1, 2])
+    with col1:
+        st.image('NVDAstock.png', caption="NVDA Stock Prediction Model")
+    with col2:
+        st.markdown("**Project 2: NVDA Stock Prediction Model**")
+        st.write("""
+            - **GitHub**: [NVDA Stock Prediction](https://github.com/asaigal2/Mini-Projects/tree/main/Project2)
+            - **Overview**: This project uses historical stock data to predict future prices of NVIDIA (NVDA) stocks.
+            - **Dataset**: Historical stock data from Yahoo Finance.
+            - **Key Features**:
+                - Linear regression model trained and tested to predict stock prices.
+                - The Jupyter Notebook contains data analysis, model training, and evaluation steps.
+        """)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Mini Project 3: Exploratory Data Analysis
+    col1, col2 = st.columns([1, 2])
+    with col1:
+        st.image('eda.png', caption="Exploratory Data Analysis/ Churn Analysis")
+    with col2:
+        st.markdown("**Exploratory Data Analysis (EDA) Project**")
+        st.write("""
+        -**GitHub**: [Churn Analysis](https://github.com/asaigal2/Practice-EDA)
+        - **Tools Used**: Python (Pandas, Matplotlib, Seaborn, Scikit-learn).
+        - **Overview**:
+            1. Perform exploratory data analysis (EDA) to identify key factors influencing customer churn.
+            2. Preprocess the data by handling categorical variables, missing values, and outliers.
+            3. Build a Random Forest classifier to predict customer churn.
+            4. Identify the top 20 customers most likely to churn based on model predictions.
+        """)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Mini Project 4: Power BI Dashboard
+    col1, col2 = st.columns([1, 2])
+    with col1:
+        st.image('PowerBI.png', caption="Power BI Dashboard")
+    with col2:
+        st.markdown("**Power BI Dashboard**")
+        st.write("""
+        - **Tools Used**: Power BI, Excel, DAX (Data Analysis Expressions).
+        - **Overview**:
+            - **KPIs**: Displayed high-level KPIs, including total sales ($12.64M), total profit ($1.47M), total quantity sold (178K units), and shipping cost ($1.35M).
+            - **Geographical Breakdown**: Visualized sales distribution across different countries (e.g., USA, Germany, France), and further drilled down by regions and states (e.g., England, California).
+            - **Sales by Category and Market**: Analyzed sales performance by product categories (Technology, Furniture, Office Supplies) and markets (APAC, EU, US).
+            - **Shipping Analysis**: Explored shipping methods and their impact on sales, with Standard Class contributing the highest sales ($7.58M).
+            - **Interactivity**: Enabled users to apply filters on product categories, regions, and shipping methods for dynamic data exploration.
+            - **DAX Measures**: Used DAX to calculate metrics such as total sales, profit margins, and year-over-year growth, providing deeper insights into business performance.
+    """)
+
+
+
+
+# Main function to render the webpage
+def main():
+    render_about_me()
+    st.markdown("---")
+    render_chatbot()
+    st.markdown("---")
+    render_research_experience()
+
+# Run the main function
+if __name__ == "__main__":
+    main()

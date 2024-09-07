@@ -1,61 +1,78 @@
 Ayushi Saigal is currently a senior at the University of Wisconsin-Madison, where she is pursuing a Bachelor of Science degree in Electrical Engineering with a specialization in Machine Learning and Data Science. She is also completing a minor in Computer Sciences. As an F1 STEM OPT student, Ayushi is actively seeking job opportunities in the fields of Machine Learning and Data Science.
 
-Ayushi has accumulated a wealth of technical experience through various internships and research roles:
+Technical Experience
+Data Science and Analysis Intern at Bennett Coleman, Delhi, IN (May 2024 - Present)
 
-1. **Data Science and Analysis Intern** at Bennett Coleman, Delhi, IN (May 2024 - Present)
-   - Worked in the Business Intelligence team, developing advanced Python scripts to automate the collection and preprocessing of large datasets, achieving a 75% reduction in manual labor.
-   - Employed SQL and Excel for robust data extraction and analysis from various databases, leading to key insights and trend identification that supported strategic decision-making.
-   - Utilized PowerBI to create reports and visualize data scraped from websites using the Selenium library.
+Worked in the Business Intelligence team, developing advanced Python scripts to automate the collection and preprocessing of large datasets, achieving a 75% reduction in manual labor.
+Employed SQL and Excel for robust data extraction and analysis from various databases, leading to key insights and trend identification that supported strategic decision-making.
+Utilized PowerBI to create reports and visualize data scraped from websites using the Selenium library.
+Machine Learning Researcher at Computational Optics Lab, UW-Madison (December 2023 - May 2024)
 
-2. **Machine Learning Researcher** at Computational Optics Lab, UW-Madison (December 2023 - May 2024)
-   - Developed a method for training neural network denoisers using only noisy data, addressing a key challenge in Fluoroscopy-Guided Surgery.
-   - Gained practical experience in machine learning and noise modeling, focusing on overcoming the lack of clean ground truth data in clinical environments.
-   - Applied Python, PyTorch, and TensorFlow in a Linux environment for model implementation, enhancing skills in programming, data analysis, and innovative problem-solving in a healthcare context.
+Developed a method for training neural network denoisers using only noisy data, addressing a key challenge in Fluoroscopy-Guided Surgery.
+Gained practical experience in machine learning and noise modeling, focusing on overcoming the lack of clean ground truth data in clinical environments.
+Applied Python, PyTorch, and TensorFlow in a Linux environment for model implementation, enhancing skills in programming, data analysis, and innovative problem-solving in a healthcare context.
+Undergraduate Math Researcher at the Department of Mathematics, UW-Madison (August 2023 - December 2023)
 
-3. **Undergraduate Math Researcher** at the Department of Mathematics, UW-Madison (August 2023 - December 2023)
-   - Designed and implemented advanced Python algorithms utilizing NumPy and Pandas for analyzing various versions of the Nim game, emphasizing algorithmic efficiency and computational optimization.
-   - Specialized in pattern recognition within game strategies, enhancing insights through data visualization tools with a team of five.
-   - Optimized the existing codebase, resulting in significant performance enhancement, accelerating the code's execution speed and improving efficiency.
+Designed and implemented advanced Python algorithms utilizing NumPy and Pandas for analyzing various versions of the Nim game, emphasizing algorithmic efficiency and computational optimization.
+Specialized in pattern recognition within game strategies, enhancing insights through data visualization tools with a team of five.
+Optimized the existing codebase, resulting in significant performance enhancement, accelerating the code's execution speed and improving efficiency.
+Image Processing Summer Intern at UW Hospital, Madison, WI (June 2023 - September 2023)
 
-4. **Image Processing Summer Intern** at UW Hospital, Madison, WI (June 2023 - September 2023)
-   - Utilized advanced MATLAB techniques to work on the optimization and comprehensive analysis of images, significantly enhancing the precision and effectiveness of research initiatives.
-   - Developed sophisticated algorithms and scripts to facilitate the seamless processing and interpretation of large datasets, advancing modern analytical research methodologies.
-   - Applied machine learning techniques such as linear regression, exponential smoothing, support vector machine, and k-means clustering.
+Utilized advanced MATLAB techniques to work on the optimization and comprehensive analysis of images, significantly enhancing the precision and effectiveness of research initiatives.
+Developed sophisticated algorithms and scripts to facilitate the seamless processing and interpretation of large datasets, advancing modern analytical research methodologies.
+Applied machine learning techniques such as linear regression, exponential smoothing, support vector machine, and k-means clustering.
+Leadership and Extracurriculars
+Vice President of Internal Relations for the Society of Women Engineers
 
-Ayushi has demonstrated strong leadership and communication skills through her involvement in various extracurricular activities:
+Oversaw internal communications and collaboration among SWE members, ensuring effective engagement.
+Coordinated attendance, travel logistics, and funding for WE and WE Local conferences, enhancing member participation and professional development.
+Student Ambassador for the College of Engineering
 
-- **Vice President of Internal Relations** for the Society of Women Engineers
-  - Oversaw internal communications and collaboration among SWE members, ensuring effective engagement.
-  - Coordinated attendance, travel logistics, and funding for WE and WE Local conferences, enhancing member participation and professional development.
+Led groups of up to 30 prospective students and families on hour-long tours of campus facilities.
+Communicated the value of a UW-Madison education to families, contributing to increased enrollment.
+Event Manager at the Wisconsin Union
 
-- **Student Ambassador** for the College of Engineering
-  - Led groups of up to 30 prospective students and families on hour-long tours of campus facilities.
-  - Communicated the value of a UW-Madison education to families, contributing to increased enrollment.
+Managed the day-to-day operations of all three union buildings, ensuring efficient and effective event execution.
+Utilized project management skills to handle event schedules, technical requirements, and customer needs in a team setting.
+Academic Projects
+India Elections Data Analysis Project (Python, PostgreSQL, Streamlit)
 
-- **Event Manager** at the Wisconsin Union
-  - Managed the day-to-day operations of all three union buildings, ensuring efficient and effective event execution.
-  - Utilized project management skills to handle event schedules, technical requirements, and customer needs in a team setting.
+Conducted a comprehensive analysis of Indian election data, creating interactive maps and visualizations to present election results.
+Leveraged PostgreSQL for data management and built a web-based application using Streamlit to explore and visualize the election data dynamically.
+GitHub: India Elections Data Analysis
+Wine Quality Classification Project (Python)
 
-Ayushi has also engaged in various academic projects, demonstrating her technical prowess and innovative thinking:
+Developed a machine learning classification model to predict the quality of white wine using features such as citric acid, pH, and alcohol content.
+Utilized k-Nearest Neighbors, Decision Tree, Random Forest, and SGD classifiers for model development and evaluation.
+GitHub: Wine Quality Classification
+NVDA Stock Prediction Model (Python)
 
-- **Pacemaker Project** (Electrical Engineering)
-  - Developed a pacemaker prototype using a microcontroller system assembled on a breadboard.
-  - Utilized fundamental electrical systems to create a realistic simulation of a patient's heart rate, enhancing the accuracy and effectiveness of the device.
+Built a machine learning model to predict future stock prices of NVIDIA using historical stock data from Yahoo Finance.
+Employed linear regression to train and test the model and performed time series analysis to evaluate trends.
+GitHub: NVDA Stock Prediction
+Customer Churn Analysis Project (Python)
 
-- **Guitar Effects Project** (Real-Time DSP)
-  - Developed audio processing effects in C/C++ using Code Composer Studio for a real-time DSP final project.
-  - Implemented a delay + echo effect using an ISR-based approach with an IIR comb filter, enhancing audio depth by adding decaying repetitions.
-  - Created a flanging effect utilizing an FIR filter and a cosine table for sinusoidal delay variation, producing a distinctive whooshing sound.
-  - Designed a chorus effect by dynamically calculating delayed indices and mixing multiple delayed samples with specific gains to simulate the sound of multiple instruments or voices.
+Analyzed customer churn data from a bank to identify factors influencing churn and build a predictive Random Forest model.
+The model predicted the likelihood of customer churn and identified the top 20 customers most likely to churn based on the model's predictions.
+GitHub: Customer Churn Analysis
+Power BI E-commerce Sales Dashboard (Power BI)
 
-- **Customer Churn Analysis Project** (Python)
-  - Analyzed customer data to predict and reduce churn using Python and machine learning techniques.
-  - Developed predictive models and provided actionable insights to optimize customer retention strategies.
+Created an interactive Power BI dashboard to analyze sales data across different product categories, regions, and shipping methods.
+Visualized key KPIs such as total sales, profit, and shipping costs, enabling stakeholders to gain actionable insights for decision-making.
+Integrated DAX measures for calculating growth metrics and filtering by regions and categories.
+Pacemaker Project (Electrical Engineering)
 
-Ayushi possesses a diverse set of technical proficiencies, including:
-- Programming Languages: Python, Java, JavaScript, HTML, CSS, C#, MATLAB
-- Tools and Technologies: Tableau, SolidWorks, MySQL, Salesforce, Power BI
-- Software: Microsoft Office (Excel, Word, PowerPoint)
-- Data Analysis and Visualization: NumPy, Pandas, PyTorch, TensorFlow, PowerBI
+Developed a pacemaker prototype using a microcontroller system to simulate a patient’s heart rate.
+Assembled the system on a breadboard, showcasing skills in circuit design and simulation.
+Guitar Effects Project (Real-Time DSP)
 
-With her robust technical background, hands-on experience, and leadership skills, Ayushi is well-prepared to contribute to innovative projects and research in the fields of Machine Learning and Data Science.
+Developed audio effects in C/C++ using Code Composer Studio for a real-time DSP project.
+Implemented delay, echo, flanging, and chorus effects by manipulating audio signals with filters and delayed samples.
+Technical Skills
+Programming Languages: Python, Java, JavaScript, HTML, CSS, C#, MATLAB
+Tools and Technologies: Tableau, SolidWorks, MySQL, Salesforce, Power BI, PyTorch, TensorFlow
+Software: Microsoft Office (Excel, Word, PowerPoint)
+Data Analysis and Visualization: NumPy, Pandas, Seaborn, Matplotlib, PowerBI, DAX
+Personal Interests
+In addition to her academic and professional endeavors, Ayushi is passionate about cooking and painting. She enjoys experimenting with different cuisines and expressing her creativity through artwork.
+Fav colour is pink and yellow 
