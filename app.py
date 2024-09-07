@@ -33,7 +33,7 @@ def render_about_me():
     st.title('Hi, I am Ayushi! 👋')
     st.write('I am a senior at the University of Wisconsin-Madison studying Electrical Engineering with a specialization in Data Science and Machine Learning. I am also pursuing a minor in Computer Sciences. I am so happy you are here!')
 
-    resume_file = 'Resume_Ayushi_Saigal.pdf'
+    resume_file = 'Ayushi_Saigal_Resume_Portfolio.pdf'
 
     if 'show_resume' not in st.session_state:
         st.session_state.show_resume = False
@@ -48,7 +48,7 @@ def render_about_me():
 # Function to render the chatbot
 def render_chatbot():
     st.header("Meet AyushiBot!")
-    st.write("Hello! I am AyushiBot. Ask me questions about Ayushi!")
+    st.write("Hello! I am AyushiBot. ")
     
     with open("bio.txt", "r") as file:
         bio_content = file.read()
@@ -65,7 +65,7 @@ def render_chatbot():
         return response.choices[0].message.content
        
 
-    user_input = st.text_input("Ask me anything about Ayushi!")
+    user_input = st.text_input("Ask me anything about Ayushi!(Hobbies, Visa Status etc!)")
     if user_input:
         bot_response = ask_bot(user_input)
         st.write(bot_response)
@@ -88,7 +88,6 @@ def render_research_experience():
             - **SQL & Excel**: Created advanced **SQL queries** and used **Excel functions** (e.g., pivot tables, VLOOKUP) to extract and analyze data from multiple databases, uncovering trends that improved decision-making accuracy.
             - **Data Visualization**: Designed interactive **PowerBI dashboards**, integrating data extracted via **Selenium** from web sources to provide actionable insights.
             - **Elections Data Analysis**: Developed a comprehensive data analysis system for election data, using **PostgreSQL** for data management, and created interactive maps and visualizations to effectively present election results.
-            - **India Map with Filters**: Created an interactive **India map** using **GeoJSON** data, adding multiple filters to allow users to explore various election metrics and visualize results geographically.
             - **Containerized Visualizations**: Utilized **Streamlit** and **Django** to containerize and deploy interactive visualizations, enabling seamless integration of data analytics and dashboards into web applications.
         """)
 
