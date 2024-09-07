@@ -3,6 +3,9 @@ import openai
 import streamlit as st
 import base64
 from openai import OpenAI
+from openai import OpenAI
+client = OpenAI()
+
 
 # Page configuration
 st.set_page_config(
@@ -45,26 +48,27 @@ def render_about_me():
 # Function to render the chatbot
 def render_chatbot():
     st.header("Meet AyushiBot!")
-    st.write("Hello! I am AyushiBot")
+    st.write("Hello! I am AyushiBot. Ask me questions about Ayushi!")
     
     with open("bio.txt", "r") as file:
         bio_content = file.read()
 
     def ask_bot(input_text):
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": f"You are an AI agent named AyushiBot helping answer questions about Ayushi to recruiters. Here is some information about Ayushi: {bio_content} If you do not know the answer, politely admit it and let users know to contact Ayushi for more information."},
-                {"role": "user", "content": input_text}
-            ]
-        )
-        return response.choices[0].message['content']
+        response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": f"You are an AI agent named AyushiBot helping answer questions about Ayushi to recruiters. Here is some information about Ayushi: {bio_content}. If you do not know the answer, politely admit it and let users know to contact Ayushi for more information."},
+            {"role": "user", "content": input_text}
+        ]
+    )
+    
+        return response.choices[0].message.content
+       
 
-    user_input = st.text_input("Ask me anything about Ayushi! (Hobbies, favourite book etc.)")
+    user_input = st.text_input("Ask me anything about Ayushi!")
     if user_input:
         bot_response = ask_bot(user_input)
         st.write(bot_response)
-
 # Function to render research experience
 def render_research_experience():
     st.markdown("<h1 style='margin-bottom: 20px;'>Technical Experience</h1>", unsafe_allow_html=True)
