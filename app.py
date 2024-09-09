@@ -35,7 +35,7 @@ def render_about_me():
     st.title('Hi, I am Ayushi! 👋')
     st.write('I am a senior at the University of Wisconsin-Madison studying Electrical Engineering with a specialization in Data Science and Machine Learning. I am also pursuing a minor in Computer Sciences. I am so happy you are here!')
 
-    resume_file = 'Ayushi_Saigal_Resume_Portfolio.pdf'
+    resume_file = 'Ayushi_Saigal_Resume.pdf'
 
     if 'show_resume' not in st.session_state:
         st.session_state.show_resume = False
@@ -259,9 +259,10 @@ def skills():
     st.subheader("Licenses & Certifications")
     st.write("""
     - **BCG - Data Science Job Simulation**  
-      Issued by Forage (July 2024)  
-      Credential ID: DjQM5itStfoaEyjpi  
-      [View Credential](#)  
+    Issued by Forage (July 2024)  
+    Credential ID: DjQM5itStfoaEyjpi  
+    [View Credential](https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/BCG%20/Tcz8gTtprzAS4xSoK_BCG_h9Y946hLET6T7PfhX_1721036137358_completion_certificate.pdf)
+    )  
 
     - **Fundamentals of Analytics on AWS**  
       Issued by Amazon Web Services (AWS) (July 2024)  
@@ -269,7 +270,7 @@ def skills():
 
     - **SQL**  
       Issued by HackerRank (July 2024)  
-      [View Credential](#)  
+      [View Credential](https://www.hackerrank.com/certificates/iframe/07731f252abc)  
              
     - **Deloitte Salesforce Bootcamp** (Among 30 students accepted to gain hands-on Salesforce)
 
