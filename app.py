@@ -4,8 +4,12 @@ import streamlit as st
 import base64
 from openai import OpenAI
 from openai import OpenAI
-client = OpenAI()
-
+import openai
+import os
+import openai
+import streamlit as st
+import base64
+from openai import OpenAI
 
 # Page configuration
 st.set_page_config(
@@ -13,16 +17,17 @@ st.set_page_config(
     layout="wide",           # Use the wide layout
     page_icon='👧🏻'
 )
-# Retrieve OpenAI API key from Streamlit Secrets
-OpenAI_key = st.secrets["OPENAI_API_KEY"]
 
-if OpenAI_key:
-    openai.api_key = OpenAI_key
-else:
-    st.error("OpenAI API Key not found. Please check your secrets configuration.")
+# Set OpenAI API key
+openai.api_key = st.secrets["openai"]["api_key"]
+
+if not openai.api_key:
+    st.error("OpenAI API Key not found. Please set the OPENAI_API_KEY environment variable.")
+
 # Initialize session state to track the current section
 if 'section' not in st.session_state:
     st.session_state.section = 'About Me'  # Default section is 'About Me'
+
 # Function to display PDF
 def get_pdf_display(pdf_file):
     with open(pdf_file, "rb") as f:
@@ -35,7 +40,8 @@ def render_about_me():
     st.title('Hi, I am Ayushi! 👋')
     st.write('I am a senior at the University of Wisconsin-Madison studying Electrical Engineering with a specialization in Data Science and Machine Learning. I am also pursuing a minor in Computer Sciences. I am so happy you are here!')
 
-    resume_file = 'Ayushi_Saigal_Resume.pdf'
+    # Display Resume Section
+    resume_file = 'Saigal_Ayushi_Resume.pdf'
 
     if 'show_resume' not in st.session_state:
         st.session_state.show_resume = False
@@ -46,53 +52,43 @@ def render_about_me():
     if st.session_state.show_resume:
         pdf_display = get_pdf_display(resume_file)
         st.markdown(pdf_display, unsafe_allow_html=True)
-        st.header("Meet AyushiBot!")
-    st.write("Hello! I am AyushiBot. ")
-    
-    with open("bio.txt", "r") as file:
-        bio_content = file.read()
 
-    def ask_bot(input_text):
-        response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": f"You are an AI agent named AyushiBot helping answer questions about Ayushi to recruiters. Here is some information about Ayushi: {bio_content}. If you do not know the answer, politely admit it and let users know to contact Ayushi for more information."},
-            {"role": "user", "content": input_text}
-        ]
-    )
-    
-        return response.choices[0].message.content
-       
-
-    user_input = st.text_input("Ask me anything about Ayushi!(Hobbies, Visa Status etc!)")
-    if user_input:
-        bot_response = ask_bot(user_input)
-        st.write(bot_response)
-
-# Function to render the chatbot
-def render_chatbot():
+    # AyushiBot Section
     st.header("Meet AyushiBot!")
-    st.write("Hello! I am AyushiBot. ")
-    
-    with open("bio.txt", "r") as file:
-        bio_content = file.read()
+    st.write("Hello! I am AyushiBot.")
 
+    # Ensure bio.txt file exists
+    try:
+        with open("bio.txt", "r") as file:
+            bio_content = file.read()
+    except FileNotFoundError:
+        st.error("bio.txt file not found.")
+        return
+
+    # Function to handle OpenAI ChatCompletion
     def ask_bot(input_text):
+        client = OpenAI(api_key=openai.api_key)
         response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": f"You are an AI agent named AyushiBot helping answer questions about Ayushi to recruiters. Here is some information about Ayushi: {bio_content}. If you do not know the answer, politely admit it and let users know to contact Ayushi for more information."},
-            {"role": "user", "content": input_text}
-        ]
-    )
-    
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role": "system",
+                    "content": f"You are an AI agent named AyushiBot helping answer questions about Ayushi to recruiters. Here is some information about Ayushi: {bio_content}. If you do not know the answer, politely admit it and let users know to contact Ayushi for more information."
+                },
+                {"role": "user", "content": input_text}
+            ]
+        )
         return response.choices[0].message.content
-       
-
-    user_input = st.text_input("Ask me anything about Ayushi!(Hobbies, Visa Status etc!)")
+    # User Input and Bot Response
+    user_input = st.text_input("Ask me anything about Ayushi! (Hobbies, Visa Status, etc.)")
     if user_input:
         bot_response = ask_bot(user_input)
         st.write(bot_response)
+
+
+
+
+
 # Function to render research experience
 def render_research_experience():
     st.markdown("<h1 style='margin-bottom: 20px;'>Technical Experience</h1>", unsafe_allow_html=True)
