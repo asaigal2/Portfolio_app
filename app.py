@@ -19,7 +19,7 @@ st.set_page_config(
 )
 
 # Set OpenAI API key
-openai.api_key = st.secrets["openai"]["api_key"]
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 if not openai.api_key:
     st.error("OpenAI API Key not found. Please set the OPENAI_API_KEY environment variable.")
