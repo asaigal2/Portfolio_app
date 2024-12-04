@@ -65,18 +65,21 @@ def render_about_me():
     # Function to handle OpenAI ChatCompletion
     def ask_bot(input_text):
         try:
-        # Initialize client with the API key from secrets
-            client = OpenAI(api_key=api_key)
+            # Create a clean client instance with just the API key
+            client = OpenAI(
+                api_key=st.secrets["OPENAI_API_KEY"]
+            )
+            
             response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {
-                    "role": "system",
-                    "content": f"You are an AI agent named AyushiBot helping answer questions about Ayushi to recruiters. Here is some information about Ayushi: {bio_content}. If you do not know the answer, politely admit it and let users know to contact Ayushi for more information."
-                },
-                {"role": "user", "content": input_text}
-            ]
-        )
+                model="gpt-3.5-turbo",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": f"You are an AI agent named AyushiBot helping answer questions about Ayushi to recruiters. Here is some information about Ayushi: {bio_content}. If you do not know the answer, politely admit it and let users know to contact Ayushi for more information."
+                    },
+                    {"role": "user", "content": input_text}
+                ]
+            )
             return response.choices[0].message.content
         except Exception as e:
             st.error(f"Error connecting to OpenAI: {str(e)}")
