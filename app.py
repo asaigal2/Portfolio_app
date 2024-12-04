@@ -1,5 +1,4 @@
 import os
-import openai
 import streamlit as st
 import base64
 import openai
@@ -62,12 +61,15 @@ def render_about_me():
         st.error("bio.txt file not found.")
         return
 
-    # Function to handle OpenAI ChatCompletion
+
+    # Remove any global openai configuration
+
     def ask_bot(input_text):
         try:
-            # Create a clean client instance with just the API key
+            # Initialize client with only the API key from Streamlit secrets
             client = OpenAI(
-                api_key=st.secrets["OPENAI_API_KEY"]
+                api_key=st.secrets["OPENAI_API_KEY"],
+                base_url="https://api.openai.com/v1"  # Explicitly set base URL
             )
             
             response = client.chat.completions.create(
@@ -82,7 +84,7 @@ def render_about_me():
             )
             return response.choices[0].message.content
         except Exception as e:
-            st.error(f"Error connecting to OpenAI: {str(e)}")
+            st.error(f"An error occurred: {str(e)}")
             return "I'm having trouble connecting right now. Please try again later."
     # User Input and Bot Response
     user_input = st.text_input("Ask me anything about Ayushi! (Hobbies, Visa Status, etc.)")
