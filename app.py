@@ -2,11 +2,8 @@ import os
 import openai
 import streamlit as st
 import base64
-from openai import OpenAI
-from openai import OpenAI
 import openai
 import os
-import openai
 import streamlit as st
 import base64
 from openai import OpenAI
@@ -19,7 +16,7 @@ st.set_page_config(
 )
 
 # Set OpenAI API key
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+api_key = st.secrets["OPENAI_API_KEY"]
 
 if not openai.api_key:
     st.error("OpenAI API Key not found. Please set the OPENAI_API_KEY environment variable.")
@@ -67,8 +64,10 @@ def render_about_me():
 
     # Function to handle OpenAI ChatCompletion
     def ask_bot(input_text):
-        client = OpenAI(api_key=openai.api_key)
-        response = client.chat.completions.create(
+        try:
+        # Initialize client with the API key from secrets
+            client = OpenAI(api_key=api_key)
+            response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {
@@ -78,7 +77,10 @@ def render_about_me():
                 {"role": "user", "content": input_text}
             ]
         )
-        return response.choices[0].message.content
+            return response.choices[0].message.content
+        except Exception as e:
+            st.error(f"Error connecting to OpenAI: {str(e)}")
+            return "I'm having trouble connecting right now. Please try again later."
     # User Input and Bot Response
     user_input = st.text_input("Ask me anything about Ayushi! (Hobbies, Visa Status, etc.)")
     if user_input:
