@@ -14,8 +14,11 @@ st.set_page_config(
     page_icon='👧🏻'
 )
 
-# Set OpenAI API key
 api_key = st.secrets["OPENAI_API_KEY"]
+
+# Set the OpenAI API key
+openai.api_key = api_key
+
 
 if not openai.api_key:
     st.error("OpenAI API Key not found. Please set the OPENAI_API_KEY environment variable.")
